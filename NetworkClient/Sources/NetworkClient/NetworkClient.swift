@@ -57,17 +57,8 @@ public extension NetworkRequest {
     }
     
     private func createRequest(baseURL: URL, path: String, queryItems: [String: String]) -> URLRequest {
-        var components = URLComponents(url: baseURL.appendingPathComponent(path), resolvingAgainstBaseURL: true)
-        components?.queryItems = queryItems.map {
-            URLQueryItem(name: $0.key, value: $0.value)
-        }
-        
-        guard let url = components?.url else {
-            fatalError("Invalid URL components")
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET" 
+        var request = URLRequest(url: baseURL.appendingPathComponent(path).appendingQueryParameters(queryItems))
+        request.httpMethod = "GET"
         return request
     }
 }
@@ -103,4 +94,12 @@ extension JSONDecoder {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder
     }()
+}
+
+extension URL {
+    func appendingQueryParameters(_ parameters: [String: String]) -> URL {
+        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else { fatalError() }
+        components.queryItems = parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
+        return components.url!
+    }
 }

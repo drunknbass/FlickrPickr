@@ -1,40 +1,57 @@
 //
-//  FlickrPickrUITests.swift
-//  FlickrPickrUITests
-//
-//  Created by Aaron Alexander on 9/16/24.
-//
 
+import Foundation
 import XCTest
 
-final class FlickrPickrUITests: XCTestCase {
 
+class FlickrPickrUITests: XCTestCase {
+    var app: XCUIApplication!
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
+        app = XCUIApplication()
+        app.launchEnvironment["DATA_PROVIDER_ENV"] = "TEST_ENVIRONMENT"
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
+    
+    func testSearchAndPhotoDetailView() throws {
+        let searchField = app.searchFields.firstMatch
+        XCTAssertTrue(searchField.waitForExistence(timeout: 5), "Search field should exist")
+        
+        searchField.tap()
+        searchField.typeText("dog\n")
+        
+        let cellsExist = app.scrollViews.buttons.firstMatch.waitForExistence(timeout: 10)
+        XCTAssertTrue(cellsExist, "Search results should appear")
+        
+        XCTAssertGreaterThan(app.scrollViews.buttons.count, 0, "There should be search results")
+                
+        let firstCell = app.scrollViews.buttons.firstMatch
+        XCTAssertTrue(firstCell.exists, "First cell should exist")
+        firstCell.tap()
+        
+        let navBarTitle = app.navigationBars.staticTexts.firstMatch
+        XCTAssertTrue(navBarTitle.waitForExistence(timeout: 5), "Navigation bar title should exist in detail view")
+        XCTAssertEqual(navBarTitle.label, "Test Title")
 
-    @MainActor
+        let shareButton = app.buttons["Share"]
+        XCTAssertTrue(shareButton.waitForExistence(timeout: 5), "Share button should exist in detail view")
+        
+        let titleText = app.staticTexts["Title"].firstMatch
+        XCTAssertTrue(titleText.waitForExistence(timeout: 5), "Title should exist in detail view")
+        XCTAssertEqual(titleText.value as? String, "Test Title")
+        
+        let descText = app.staticTexts["Description"].firstMatch
+        XCTAssertTrue(descText.waitForExistence(timeout: 5), "Description should exist in detail view")
+        XCTAssertEqual(descText.value as? String, "Test description.")
+        
+        let authorText = app.staticTexts["Author"].firstMatch
+        XCTAssertTrue(authorText.waitForExistence(timeout: 5), "Author should exist in detail view")
+        XCTAssertEqual(authorText.value as? String, "Aaron Alexander")
+    }
+    
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
             measure(metrics: [XCTApplicationLaunchMetric()]) {
                 XCUIApplication().launch()
             }

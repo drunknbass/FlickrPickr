@@ -1,28 +1,41 @@
 //
 
 import Foundation
+import NetworkClient
 import SwiftUI
 
-//
-protocol FlickerDataProvider {
+
+protocol PhotoDataProvider {
     func photos(filteredBy tags: [String]) async throws -> [PhotoItem]
 }
 
 
-final class APIClient {
+final class FlickrClient {
     let jsonDecoder = JSONDecoder()
 }
 
-extension APIClient: FlickerDataProvider {
+extension FlickrClient: PhotoDataProvider {
     func photos(filteredBy tags: [String]) async throws -> [PhotoItem] {
-        let url = URL(string: "https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1&tags=\(tags.joined(separator: ", "))")!
-        let (data, _) = try await URLSession.shared.data(from: url)
-        let photoFeed = try jsonDecoder.decode(PhotoFeed.self, from: data)
-        return photoFeed.items
+        return try await PhotosRequest(tags: tags).start().items
     }
 }
 
-//
 extension EnvironmentValues {
-    @Entry var dataProvider: FlickerDataProvider = APIClient()
+    @Entry var dataProvider: PhotoDataProvider = {
+        // use mock data for tests
+        if let testEnvironment = ProcessInfo.processInfo.environment["DATA_PROVIDER_ENV"],
+           testEnvironment == "TEST_ENVIRONMENT" {
+            return MockDataProvider()
+        } else {
+            return FlickrClient()
+        }
+    }()
+}
+
+final class MockDataProvider: PhotoDataProvider {
+    func photos(filteredBy tags: [String]) async throws -> [PhotoItem] {
+        [
+            PhotoItem.sample
+        ]
+    }
 }

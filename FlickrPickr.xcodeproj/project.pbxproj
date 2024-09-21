@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5D229E3F2C99451F005FFADD /* NetworkClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5D229E3E2C99451F005FFADD /* NetworkClient */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		5D229D092C98BF84005FFADD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D229E3F2C99451F005FFADD /* NetworkClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,12 +111,14 @@
 			buildRules = (
 			);
 			dependencies = (
+				5D229E5C2C99460D005FFADD /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5D229CFA2C98BF82005FFADD /* FlickrPickr */,
 			);
 			name = FlickrPickr;
 			packageProductDependencies = (
+				5D229E3E2C99451F005FFADD /* NetworkClient */,
 			);
 			productName = FlickrPickr;
 			productReference = 5D229CF82C98BF82005FFADD /* FlickrPickr.app */;
@@ -195,6 +202,9 @@
 			);
 			mainGroup = 5D229CEF2C98BF82005FFADD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5D229E3D2C99451F005FFADD /* XCLocalSwiftPackageReference "NetworkClient" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5D229CF92C98BF82005FFADD /* Products */;
 			projectDirPath = "";
@@ -265,6 +275,10 @@
 			isa = PBXTargetDependency;
 			target = 5D229CF72C98BF82005FFADD /* FlickrPickr */;
 			targetProxy = 5D229D132C98BF84005FFADD /* PBXContainerItemProxy */;
+		};
+		5D229E5C2C99460D005FFADD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 5D229E5B2C99460D005FFADD /* NetworkClient */;
 		};
 /* End PBXTargetDependency section */
 
@@ -558,6 +572,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		5D229E3D2C99451F005FFADD /* XCLocalSwiftPackageReference "NetworkClient" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = NetworkClient;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5D229E3E2C99451F005FFADD /* NetworkClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NetworkClient;
+		};
+		5D229E5B2C99460D005FFADD /* NetworkClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D229E3D2C99451F005FFADD /* XCLocalSwiftPackageReference "NetworkClient" */;
+			productName = NetworkClient;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5D229CF02C98BF82005FFADD /* Project object */;
 }

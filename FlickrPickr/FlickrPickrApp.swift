@@ -1,17 +1,15 @@
 //
-//  FlickrPickrApp.swift
-//  FlickrPickr
-//
-//  Created by Aaron Alexander on 9/16/24.
-//
 
 import SwiftUI
 
+
 @main
 struct FlickrPickrApp: App {
+    @Environment(\.dataProvider) var dataProvider: PhotoDataProvider
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(dataProvider: dataProvider)
         }
     }
 }
